@@ -2,7 +2,7 @@ import { Recipe } from "@/types";
 
 export const recipes: Recipe[] = [
   {
-    id: 1,
+    id: "1",
     name: "Spaghetti Bolognese",
     ingredients: [
       "spaghetti",
@@ -23,7 +23,7 @@ export const recipes: Recipe[] = [
     ],
   },
   {
-    id: 2,
+    id: "2",
     name: "Chicken Curry",
     ingredients: [
       "chicken breast",
@@ -44,7 +44,7 @@ export const recipes: Recipe[] = [
     ],
   },
   {
-    id: 3,
+    id: "3",
     name: "Pancakes",
     ingredients: ["flour", "milk", "egg", "sugar", "baking powder", "butter"],
     steps: [
