@@ -1,6 +1,6 @@
 export type Recipe = {
-  id: string;
-  name: string;
-  ingredients: string[];
-  steps: string[];
+  idMeal: string;
+  strMeal: string;
+  strIngredient1: string;
+  strInstructions: string;
 };

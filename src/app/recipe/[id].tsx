@@ -1,11 +1,13 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { View, Text } from "react-native";
-import { recipes } from "@/data";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { Recipe } from "@/types";
+
+import { useState, useEffect } from "react";
 
 export default function RecipeDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -13,7 +15,26 @@ export default function RecipeDetails() {
   const { bottom, left, right, top } = useSafeAreaInsets();
   console.log("bottom", bottom, "left", left, "right", right, "top", top);
 
-  const recipe = recipes.find((recipe) => recipe.id === id);
+  // const recipe = recipes.find((recipe) => recipe.idMeal === id);
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+
+  useEffect(() => {
+    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.meals && data.meals.length > 0) {
+          setRecipe({
+            idMeal: data.meals[0].idMeal,
+            strMeal: data.meals[0].strMeal,
+            strIngredient1: data.meals[0].strIngredient1,
+            strInstructions: data.meals[0].strInstructions,
+          });
+        } else {
+          setRecipe(null); // In case the API returns no meals
+        }
+      })
+      .catch((error) => console.error("Error fetching recipe:", error));
+  }, [id]);
 
   if (!recipe) {
     return <Text>Recipe not found</Text>;
@@ -30,7 +51,7 @@ export default function RecipeDetails() {
         />
 
         <Text className="mt-10">
-          Recipe Details:{top}: {id} : {recipe?.ingredients}
+          Recipe Details: {id} : {recipe?.strMeal}
         </Text>
       </View>
     </SafeAreaProvider>
